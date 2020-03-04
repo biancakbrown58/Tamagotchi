@@ -35,11 +35,12 @@ namespace Tamagotchi.Controllers
       return item;
     }
     [HttpPut("{id}/play")]
-    public Pet Play(int id)
+    public Pet Play(int id)//bool IsDead
     {
       var item = db.Pets.FirstOrDefault(i => i.Id == id);
       item.HappinessLevel += 5;
       item.HungerLevel += 3;
+
       db.SaveChanges();
       return item;
     }
@@ -59,6 +60,23 @@ namespace Tamagotchi.Controllers
       item.HappinessLevel -= 5;
       db.SaveChanges();
       return item;
+    }
+    [HttpGet("alive")]
+
+    public List<Pet> Alive(bool IsDead)
+    {
+      //var pets = db.Pets.OrderBy(p => p.Name);
+      var pets = db.Pets.Where(i => i.IsDead == false);
+      foreach (var pet in pets)
+      {
+        //return pets.ToList();
+        Console.WriteLine($"{pet.Name}");
+      }
+      //public List<Pet> GetAllPets()
+
+      // var pets = db.Pets.OrderBy(p => p.Name);
+      return pets.ToList();
+
     }
 
     [HttpDelete("{id}")]
